@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Daily Planner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>My Daily Planner</h1>
+  </header>
+
+  <main>
+    <!-- Task input -->
+    <section class="task-form">
+      <input type="text" id="task-input" placeholder="Enter new task..." />
+      <button id="add-task">Add Task</button>
+    </section>
+
+    <!-- Search input -->
+    <section class="search-bar">
+      <input type="text" id="search-input" placeholder="Search tasks..." />
+    </section>
+
+    <!-- Tabs -->
+    <section class="tabs">
+      <button onclick="showTab('pending')">Pending</button>
+      <button onclick="showTab('completed')">Completed</button>
+      <button onclick="showTab('deleted')">Deleted</button>
+    </section>
+
+    <!-- Task Sections -->
+    <section class="task-sections">
+      <ul id="task-list-pending" class="task-list-section"></ul>
+      <ul id="task-list-completed" class="task-list-section" style="display: none;"></ul>
+      <ul id="task-list-deleted" class="task-list-section" style="display: none;"></ul>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="hidden">↑ Back to Top</button>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Daily Planner App</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
