@@ -155,14 +155,6 @@ function renderTasks(filter = "") {
     saveTasks(tasks);
   }
 
-//   function calculateDaysLeft(dueDateStr) {
-//     const today = new Date();
-//     const dueDate = new Date(dueDateStr);
-//     const timeDiff = dueDate - today;
-//     const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-//     return daysLeft >= 0 ? daysLeft : 'Expired';
-//   }
-
 function formatDueDate(datetimeStr) {
     const options = {
       year: 'numeric', month: 'short', day: 'numeric',
