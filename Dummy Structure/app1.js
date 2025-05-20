@@ -1,0 +1,185 @@
+import { saveTasks, loadTasks } from './storage1.js';
+
+const taskInput = document.getElementById('task-input');
+const addTaskBtn = document.getElementById('add-task');
+const clearTaskBtn = document.getElementById('clear-task');
+const searchInput = document.getElementById('search-input');
+
+const pendingList = document.getElementById('task-list-pending');
+const completedList = document.getElementById('task-list-completed');
+const deletedList = document.getElementById('task-list-deleted');
+const taskDesc = document.getElementById('task-desc');
+
+let tasks = loadTasks();
+
+clearTaskBtn.addEventListener('click', () => {
+    if (confirm("Are you sure you want to clear all tasks?")) {
+      tasks = [];
+      localStorage.removeItem('tasks');
+      renderTasks();
+    }
+  });
+
+  addTaskBtn.addEventListener('click', () => {
+    const text = taskInput.value.trim();
+    const description = taskDesc.value.trim();
+    let dueDate = document.getElementById('task-due').value ;
+
+    if (!dueDate) {
+        const now = new Date();
+        now.setDate(now.getDate() + 2);
+        dueDate = now.toISOString().slice(0,16);
+      }
+  
+    if (text && description && description.split(' ').length <= 5) {
+      tasks.push({ text, description, dueDate, completed: false, deleted: false });
+      taskInput.value = '';
+      taskDesc.value = '';
+      document.getElementById('task-due').value = '';
+      saveTasks(tasks);
+      renderTasks();
+    }
+  });
+
+searchInput.addEventListener('input', (e) => {
+  const filter = e.target.value.trim();
+  renderTasks(filter);
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('toggle-complete')) {
+    const index = e.target.dataset.index;
+    tasks[index].completed = !tasks[index].completed;
+    renderTasks(searchInput.value.trim());
+  }
+
+  if (e.target.classList.contains('delete-task')) {
+    const index = e.target.dataset.index;
+    tasks[index].deleted = true;
+    renderTasks(searchInput.value.trim());
+  }
+
+  if (e.target.classList.contains('recover-task')) {
+    const index = e.target.dataset.index;
+    tasks[index].deleted = false;
+    renderTasks(searchInput.value.trim());
+  }
+
+  if (e.target.closest('.permanent-delete-task')) {
+    const index = e.target.closest('.permanent-delete-task').dataset.index;
+    tasks.splice(index, 1);
+    saveTasks(tasks);
+    renderTasks(searchInput.value.trim());
+  }
+  
+  
+});
+
+function renderTasks(filter = "") {
+    pendingList.innerHTML = '';
+    completedList.innerHTML = '';
+    deletedList.innerHTML = '';
+  
+    const filteredTasks = tasks.filter(task =>
+      task.text.toLowerCase().includes(filter.toLowerCase()) ||
+      (task.description || '').toLowerCase().includes(filter.toLowerCase())
+    );
+  
+    filteredTasks.forEach((task) => {
+      const index = tasks.indexOf(task);
+      const li = document.createElement('li');
+      li.className = 'task-item';
+      li.innerHTML = `
+        <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
+        <p class="task-desc">${task.description || ''}</p>
+        <p class="task-due">
+        ${task.dueDate ? `Expires at<br><i style="font-size: 0.85rem; color:rgb(242, 136, 15);">${formatDueDate(task.dueDate)}</i>` : ''}
+        </p>
+        <div>
+          ${!task.deleted
+            ? `
+              <input type="checkbox" ${task.completed ? 'checked' : ''} data-index="${index}" class="toggle-complete"/>
+              <button data-index="${index}" class="delete-task" title="Delete Task">
+                <i class="fas fa-trash"></i>
+              </button>
+            `
+            : `
+              <button data-index="${index}" class="recover-task" title="Recover Task">
+                <i class="fas fa-undo"></i>
+              </button>
+              <button data-index="${index}" class="permanent-delete-task" title="Delete Permanently">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            `}
+        </div>
+      `;
+  
+      if (task.deleted) {
+        deletedList.appendChild(li);
+      } else if (task.completed) {
+        completedList.appendChild(li);
+      } else {
+        pendingList.appendChild(li);
+      }
+    });
+  
+    if (!pendingList.hasChildNodes()) {
+      const msg = document.createElement('li');
+      msg.className = 'empty-msg';
+      msg.textContent = 'No pending tasks';
+      pendingList.appendChild(msg);
+    }
+  
+    if (!completedList.hasChildNodes()) {
+      const msg = document.createElement('li');
+      msg.className = 'empty-msg';
+      msg.textContent = 'No completed tasks';
+      completedList.appendChild(msg);
+    }
+  
+    if (!deletedList.hasChildNodes()) {
+      const msg = document.createElement('li');
+      msg.className = 'empty-msg';
+      msg.textContent = 'No deleted tasks';
+      deletedList.appendChild(msg);
+    }
+  
+    const pendingCount = tasks.filter(task => !task.completed && !task.deleted).length;
+    const completedCount = tasks.filter(task => task.completed && !task.deleted).length;
+    const deletedCount = tasks.filter(task => task.deleted).length;
+  
+    document.getElementById('pending-count').textContent = pendingCount;
+    document.getElementById('completed-count').textContent = completedCount;    
+    document.getElementById('deleted-count').textContent = deletedCount;
+  
+    saveTasks(tasks);
+  }
+
+function formatDueDate(datetimeStr) {
+    const options = {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    };
+    return new Date(datetimeStr).toLocaleString(undefined, options);
+  }
+  
+  
+window.showTab = function(tab) {
+    document.querySelectorAll('.task-list-section').forEach(section => {
+      section.style.display = 'none';
+    });
+    document.getElementById(`task-list-${tab}`).style.display = 'block';
+  
+    document.querySelectorAll('.tabs button').forEach(btn => {
+      btn.classList.remove('active-pending', 'active-completed', 'active-deleted');
+    });
+  
+    const activeBtn = document.querySelector(`.tabs button[onclick="showTab('${tab}')"]`);
+    activeBtn.classList.add(`active-${tab}`);
+  };
+  
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderTasks();
+  showTab('pending'); 
+});

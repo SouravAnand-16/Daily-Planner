@@ -5,55 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Daily Planner</title>
   <link rel="stylesheet" href="style.css" />
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <meta name="theme-color" content="#4CAF50">
 </head>
 <body>
   <header>
     <h1>My Daily Planner</h1>
+    <button id="toggle-theme" aria-label="Toggle Dark Mode">
+      <i class="fas fa-moon"></i>
+    </button>
   </header>
 
   <main>
-    <!-- Task input -->
     <section class="task-form">
       <input type="text" id="task-input" placeholder="Enter new task..." />
-      <textarea id="task-desc" placeholder="Enter task description (max 5 words)" rows="2" maxlength="200"></textarea>
-      <input type="date" id="task-due" />
+      <textarea id="task-desc" placeholder="Enter task description (max 5 words)" rows="2" maxlength="50"></textarea>
+      <input type="datetime-local" id="due-date" />
+      <select id="task-priority">
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+      </select>
       <button id="add-task">Add Task</button>
-      <button id="clear-task">Clear Task</button>
+      <button id="clear-task">Clear Tasks</button>
     </section>
 
-    <!-- Search input -->
     <section class="search-bar">
       <input type="text" id="search-input" placeholder="Search tasks..." />
+      <select id="sort-tasks">
+        <option value="newest">Newest First</option>
+        <option value="dueDate">Due Date</option>
+        <option value="alphabetical">A → Z</option>
+      </select>
     </section>
 
-    <!-- Tabs -->
     <section class="tabs">
-        <button onclick="showTab('pending')">
-          Pending (<span id="pending-count">0</span>)
-        </button>
-        <button onclick="showTab('completed')">
-          Completed (<span id="completed-count">0</span>)
-        </button>
-        <button onclick="showTab('deleted')">
-          Deleted (<span id="deleted-count">0</span>)
-        </button>
-      </section>
-      
+      <button onclick="showTab('pending')">Pending (<span id="pending-count">0</span>)</button>
+      <button onclick="showTab('completed')">Completed (<span id="completed-count">0</span>)</button>
+      <button onclick="showTab('deleted')">Deleted (<span id="deleted-count">0</span>)</button>
+    </section>
 
-    <!-- Task Sections -->
     <section class="task-sections">
       <ul id="task-list-pending" class="task-list-section"></ul>
       <ul id="task-list-completed" class="task-list-section" style="display: none;"></ul>
       <ul id="task-list-deleted" class="task-list-section" style="display: none;"></ul>
     </section>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" class="hidden">↑ Back to Top</button>
+    <button id="back-to-top" class="hidden">&#8679; Back to Top</button>
   </main>
+
+  <div id="toast" class="toast hidden"></div>
 
   <footer>
     <p>&copy; 2025 Daily Planner App</p>
