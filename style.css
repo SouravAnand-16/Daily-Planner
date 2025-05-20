@@ -143,6 +143,25 @@
   .task-item button.delete-task:hover {
     background-color: #c53030;
   }
+
+  .task-desc {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 4px 0 0 0;
+    font-style: italic;
+  }
+
+  #clear-task {
+    padding: 0.6rem 1rem;
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
   
   /* Back to Top */
   #back-to-top {

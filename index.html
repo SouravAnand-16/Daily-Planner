@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Daily Planner</title>
   <link rel="stylesheet" href="style.css" />
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 </head>
 <body>
   <header>
@@ -15,7 +19,9 @@
     <!-- Task input -->
     <section class="task-form">
       <input type="text" id="task-input" placeholder="Enter new task..." />
+      <textarea id="task-desc" placeholder="Enter task description (max 5 words)" rows="2" maxlength="200"></textarea>
       <button id="add-task">Add Task</button>
+      <button id="clear-task">Clear Task</button>
     </section>
 
     <!-- Search input -->
