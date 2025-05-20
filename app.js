@@ -20,19 +20,26 @@ clearTaskBtn.addEventListener('click', () => {
     }
   });
 
-addTaskBtn.addEventListener('click', () => {
-  let desc = taskDesc.value.trim();
-  const words = desc.split(/\s+/).slice(0, 5);
-  desc = words.join(' ');
+  addTaskBtn.addEventListener('click', () => {
+    const text = taskInput.value.trim();
+    const description = taskDesc.value.trim();
+    let dueDate = document.getElementById('task-due').value ;
 
-  const taskNumber = tasks.length + 1;
-  const text = taskInput.value.trim() || `plan-${taskNumber}`;
-  tasks.push({ text, description: desc, completed: false, deleted: false });
-  taskInput.value = '';
-  taskDesc.value = '';
-  saveTasks(tasks);
-  renderTasks();
-});
+    if (!dueDate) {
+        const now = new Date();
+        now.setDate(now.getDate() + 2);
+        dueDate = now.toISOString().slice(0,16);
+      }
+  
+    if (text && description && description.split(' ').length <= 5) {
+      tasks.push({ text, description, dueDate, completed: false, deleted: false });
+      taskInput.value = '';
+      taskDesc.value = '';
+      document.getElementById('task-due').value = '';
+      saveTasks(tasks);
+      renderTasks();
+    }
+  });
 
 searchInput.addEventListener('input', (e) => {
   const filter = e.target.value.trim();
@@ -85,6 +92,9 @@ function renderTasks(filter = "") {
       li.innerHTML = `
         <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
         <p class="task-desc">${task.description || ''}</p>
+        <p class="task-due">
+        ${task.dueDate ? `Expires at<br><i style="font-size: 0.85rem; color:rgb(242, 136, 15);">${formatDueDate(task.dueDate)}</i>` : ''}
+        </p>
         <div>
           ${!task.deleted
             ? `
@@ -144,9 +154,24 @@ function renderTasks(filter = "") {
   
     saveTasks(tasks);
   }
-  
-  
 
+//   function calculateDaysLeft(dueDateStr) {
+//     const today = new Date();
+//     const dueDate = new Date(dueDateStr);
+//     const timeDiff = dueDate - today;
+//     const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+//     return daysLeft >= 0 ? daysLeft : 'Expired';
+//   }
+
+function formatDueDate(datetimeStr) {
+    const options = {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    };
+    return new Date(datetimeStr).toLocaleString(undefined, options);
+  }
+  
+  
 window.showTab = function(tab) {
     document.querySelectorAll('.task-list-section').forEach(section => {
       section.style.display = 'none';
