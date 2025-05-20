@@ -31,10 +31,17 @@
 
     <!-- Tabs -->
     <section class="tabs">
-      <button onclick="showTab('pending')">Pending</button>
-      <button onclick="showTab('completed')">Completed</button>
-      <button onclick="showTab('deleted')">Deleted</button>
-    </section>
+        <button onclick="showTab('pending')">
+          Pending (<span id="pending-count">0</span>)
+        </button>
+        <button onclick="showTab('completed')">
+          Completed (<span id="completed-count">0</span>)
+        </button>
+        <button onclick="showTab('deleted')">
+          Deleted (<span id="deleted-count">0</span>)
+        </button>
+      </section>
+      
 
     <!-- Task Sections -->
     <section class="task-sections">

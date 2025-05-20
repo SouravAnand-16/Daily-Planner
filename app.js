@@ -73,44 +73,78 @@ function renderTasks(filter = "") {
     completedList.innerHTML = '';
     deletedList.innerHTML = '';
   
-    tasks
-      .filter(task => task.text.toLowerCase().includes(filter.toLowerCase()))
-      .forEach((task, index) => {
-        const li = document.createElement('li');
-        li.className = 'task-item';
-        li.innerHTML = `
-          <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
-            <p class="task-desc">${task.description}</p>
-          <div>
-            ${!task.deleted
-              ? `
-                <input type="checkbox" ${task.completed ? 'checked' : ''} data-index="${index}" class="toggle-complete"/>
-                <button data-index="${index}" class="delete-task" title="Delete Task">
-                <i class="fas fa-trash"></i>
-                </button>
-              `
-              : `
-                <button data-index="${index}" class="recover-task" title="Recover Task">
-                <i class="fas fa-undo"></i>
-                </button>
-                <button data-index="${index}" class="permanent-delete-task" title="Delete Permanently">
-                <i class="fas fa-trash-alt"></i>
-                </button>
-              `}
-          </div>
-        `;
+    const filteredTasks = tasks.filter(task =>
+      task.text.toLowerCase().includes(filter.toLowerCase()) ||
+      (task.description || '').toLowerCase().includes(filter.toLowerCase())
+    );
   
-        if (task.deleted) {
-          deletedList.appendChild(li);
-        } else if (task.completed) {
-          completedList.appendChild(li);
-        } else {
-          pendingList.appendChild(li);
-        }
-      });
+    filteredTasks.forEach((task) => {
+      const index = tasks.indexOf(task);
+      const li = document.createElement('li');
+      li.className = 'task-item';
+      li.innerHTML = `
+        <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
+        <p class="task-desc">${task.description || ''}</p>
+        <div>
+          ${!task.deleted
+            ? `
+              <input type="checkbox" ${task.completed ? 'checked' : ''} data-index="${index}" class="toggle-complete"/>
+              <button data-index="${index}" class="delete-task" title="Delete Task">
+                <i class="fas fa-trash"></i>
+              </button>
+            `
+            : `
+              <button data-index="${index}" class="recover-task" title="Recover Task">
+                <i class="fas fa-undo"></i>
+              </button>
+              <button data-index="${index}" class="permanent-delete-task" title="Delete Permanently">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            `}
+        </div>
+      `;
+  
+      if (task.deleted) {
+        deletedList.appendChild(li);
+      } else if (task.completed) {
+        completedList.appendChild(li);
+      } else {
+        pendingList.appendChild(li);
+      }
+    });
+  
+    if (!pendingList.hasChildNodes()) {
+      const msg = document.createElement('li');
+      msg.className = 'empty-msg';
+      msg.textContent = 'No pending tasks';
+      pendingList.appendChild(msg);
+    }
+  
+    if (!completedList.hasChildNodes()) {
+      const msg = document.createElement('li');
+      msg.className = 'empty-msg';
+      msg.textContent = 'No completed tasks';
+      completedList.appendChild(msg);
+    }
+  
+    if (!deletedList.hasChildNodes()) {
+      const msg = document.createElement('li');
+      msg.className = 'empty-msg';
+      msg.textContent = 'No deleted tasks';
+      deletedList.appendChild(msg);
+    }
+  
+    const pendingCount = tasks.filter(task => !task.completed && !task.deleted).length;
+    const completedCount = tasks.filter(task => task.completed && !task.deleted).length;
+    const deletedCount = tasks.filter(task => task.deleted).length;
+  
+    document.getElementById('pending-count').textContent = pendingCount;
+    document.getElementById('completed-count').textContent = completedCount;    
+    document.getElementById('deleted-count').textContent = deletedCount;
   
     saveTasks(tasks);
   }
+  
   
 
 window.showTab = function(tab) {
