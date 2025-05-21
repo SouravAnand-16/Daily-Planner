@@ -65,7 +65,7 @@ backToTopBtn.addEventListener('click', () => {
 });
 
 window.addEventListener('scroll', throttle(() => {
-  backToTopBtn.classList.toggle('hidden', window.scrollY < 300);
+  backToTopBtn.classList.toggle('hidden', window.scrollY >= 300);
 }, 200));
 
 function renderTasks(filter = '') {

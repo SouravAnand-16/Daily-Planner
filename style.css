@@ -128,7 +128,7 @@ body {
     display: none;
   }
   
-  #back-to-top.visible {
+  #back-to-top.hidden {
     display: block;
   }
   
