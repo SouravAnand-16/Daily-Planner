@@ -91,7 +91,9 @@ function renderTasks(filter = '') {
     li.innerHTML = `
       <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
       <p class="task-desc">${task.description}</p>
-      ${task.dueDate ? `<div class="due-date">Expires at<br><i>${formatDueDate(task.dueDate)}</i></div>` : ''}
+      ${task.dueDate ? `<div class="due-date">
+        Expires at
+        <br><i style="font-size: 0.85rem; color:rgb(242, 136, 15);">${formatDueDate(task.dueDate)}</i></div>` : ''}
       <div>
         ${!task.deleted ? `
           <input type="checkbox" ${task.completed ? 'checked' : ''} data-index="${index}" class="toggle-complete"/>
