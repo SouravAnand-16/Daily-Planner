@@ -21,17 +21,32 @@
     <section class="task-form">
       <input type="text" id="task-input" placeholder="Enter new task..." />
       <textarea id="task-desc" placeholder="Enter task description (max 5 words)" rows="2" maxlength="50"></textarea>
-      <input type="datetime-local" id="due-date" />
-      <select id="task-priority">
-        <option value="low">Low</option>
-        <option value="medium" selected>Medium</option>
-        <option value="high">High</option>
-      </select>
-      <button id="add-task">Add Task</button>
-      <button id="clear-task">Clear Tasks</button>
+      <div class="task-meta">
+        <input type="datetime-local" id="due-date" />
+        <select id="task-priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button id="add-task">Add Task</button>
+        <button id="clear-task">Clear Tasks</button>
+      </div>
+      <!-- <div class="task-buttons">
+        <button id="add-task">Add Task</button>
+        <button id="clear-task">Clear Tasks</button>
+      </div> -->
     </section>
 
-    <section class="search-bar">
+    <!-- <section class="search-bar">
+      <input type="text" id="search-input" placeholder="Search tasks..." />
+      <select id="sort-tasks">
+        <option value="newest">Newest First</option>
+        <option value="dueDate">Due Date</option>
+        <option value="alphabetical">A → Z</option>
+      </select>
+    </section> -->
+
+    <section class="search-sort">
       <input type="text" id="search-input" placeholder="Search tasks..." />
       <select id="sort-tasks">
         <option value="newest">Newest First</option>
@@ -39,6 +54,7 @@
         <option value="alphabetical">A → Z</option>
       </select>
     </section>
+    
 
     <section class="tabs">
       <button onclick="showTab('pending')">Pending (<span id="pending-count">0</span>)</button>

@@ -26,9 +26,9 @@ body {
     margin: auto;
   }
   
-  .task-form,
-  .search-bar,
-  .tabs {
+  .task-form
+  /* .search-bar, */
+  /* .tabs, */{
     margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
@@ -39,7 +39,7 @@ body {
   .task-form textarea,
   .task-form select,
   .task-form button,
-  .search-bar input,
+  /* .search-bar input, */
   .tabs button,
   #sort-tasks {
     padding: 0.5rem;
@@ -62,11 +62,7 @@ body {
   #sort-tasks:hover {
     background-color: #2c387e;
   }
-  
-  .tabs {
-    display: flex;
-    justify-content: space-around;
-  }
+
   
   .tabs button.active-pending {
     background-color: #ffeb3b;
@@ -194,5 +190,55 @@ body.dark-mode {
   
   body.dark-mode .tabs button.active-deleted {
     background-color: #d66a6a;
+  }
+  
+
+  .task-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    /* max-width: 400px; */
+  }
+  
+  .task-meta input,
+  .task-meta select {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .search-sort {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  
+  .search-sort input,
+  .search-sort select {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    
+  }
+  
+  .tabs button {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .task-buttons {
+   display: flex;
+   gap: 0.5rem;
+   flex-wrap: wrap;
+   margin-top: 0.5rem;
+   text-align: center;
   }
   
